@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Toolbox 
 {
@@ -11,26 +12,49 @@ public class Toolbox
    * @param head the head node of the singly linked list
    * @return the number of nodes in the list
    * @throws IllegalArgumentException if the head is null
+   * for loops have an end. while loops dont have an end.
+   * linkedlists have no indexes
+   * length of the linked list 
+   * how many times does 5 show up 
+   * how many times the majority number is repeated
+   * 
+   * 
+   * 
+   * 
    */
+
+  //one input named head, method named length returns int 
   public static int length(SingleNode head) 
   {
-    if (head == null) //list cannot be null
+    //basecase
+    if(head == null)
     {
-      throw new IllegalArgumentException("Head cannot be null.");
+      throw new IllegalArgumentException("head cannot be null");
     }
 
-   
-    int count = 0;    //tracker counter for the nodes
-    SingleNode current = head;  // starts from head
+    //current is the variable to iterate through the list
+    //it starts at head
+    SingleNode current = head;
+    //tracker that counts the nodes when we visit it
+    int count = 0;
 
-    while (current != null)  //current doesnt equal null so loop until reaches null/end
+    //while current which is head is not null keep visiting
+    while(current != null)
     {
-      count++; //increment count for each 
-      current = current.next; //iterat to the next node
+      //move to the next node
+      current = current.next;
+      //add 1 to the counter because we just visited
+      count++;
     }
+    //return total count of nodes
+    return count;
 
-    return count; //return total count of nodes
+
   }
+
+
+
+
 
   /**
    * Finds the tail of a singly linked list given the head.
@@ -41,22 +65,26 @@ public class Toolbox
    */
   public static SingleNode findTail(SingleNode head) 
   {
-    if (head == null) 
+    //base case, if head is null dont move on
+    if (head == null)
     {
-      //list cannot be null
-      throw new IllegalArgumentException("Head cannot be null.");
+      throw new IllegalArgumentException("Head cannot be null");
     }
 
-    SingleNode current = head; //starts from head
 
-    while (current.next != null)  //current doesnt equal null so loop until reaches null/end
+    SingleNode current = head; //creating object to enter data with
+
+    while(current.next != null) //while the next pointer is not null continue
     {
-      current = current.next; //iterated to the nect node, move right,f oward
+      current = current.next; //move to the next
     }
-  
-    return current; //youll end up at the last node 
+
+    return current; //move until the end is reached return
 
   }
+
+
+
 
   /** 
    * Finds the head of a doubly linked list given the tail.
@@ -67,19 +95,21 @@ public class Toolbox
    */
   public static DoubleNode findHead(DoubleNode tail) 
   {
-    if (tail == null) //list cannot be null
-    {
-      throw new IllegalArgumentException("Tail cannot be null.");
-    }
+      if(tail==null)
+      {
+        throw new IllegalArgumentException("tail cannot be null");
+      }
 
-    DoubleNode current = tail; //starts from the end/tail
+      DoubleNode current = tail;
 
-    while(current.prev != null) 
-    {
-      current = current.prev; //move left, back if not null
-    }
-    return current; //returns to the start, first node which is the head
-  }
+      while(tail.prev != null)
+      {
+        current = current.prev;
+      }
+
+      return current;
+  } 
+
 
   /**
    * Counts the occurrences of values in a linked list.
@@ -88,37 +118,37 @@ public class Toolbox
    * @return a map where the keys are the values in the list, and the values are the counts of occurrences
    * @throws IllegalArgumentException if the head is null
    */
-  public static Map<Integer, Integer> countOccurrences(SingleNode head) 
+  public static Map<Integer, Integer> countOccurrences(SingleNode head) //always look into the datatype thats being returned and passed in, to create objects from.
   {
-    if (head == null) //list cannot be null
+    if(head == null)
     {
-      throw new IllegalArgumentException("Head cannot be null.");
+      throw new IllegalArgumentException ("head cannot be null");
     }
-    Map<Integer, Integer> mapper = new HashMap<>(); //created mapper object
 
-    SingleNode current = head; //starts from the head, current is the list
+    SingleNode current = head;
+    Map<Integer, Integer> mapper = new HashMap<>();
 
-    //check if something is already in the map if not put it in with the count of 1
-    //if it isnt in the map then get the value and increase it by 1
     while(current != null)
     {
-      int key = current.data; //key is the data (from above they referenced value) from the linked list 
+      int key = current.data; //key is the value. get data, number for the current code
 
-      if(!mapper.containsKey(key)) //if the data isnt already a key in mapper
+      if(!mapper.containsKey(key))
       {
-      mapper.put(key, 1); //add the key and associated value of 1
+        mapper.put(key, 1); //1 is the first occurance since values are the counts
       }
-      else 
+      else//else will be prevalent with maps that count values
       {
-      mapper.put(key, mapper.get(key) + 1); //overwrite(put) the key and getting the value plus 1
+        mapper.put(key, mapper.get(key) + 1); //if weve seen it then get it then plus one
       }
-
-      current = current.next; //iterating to the next node.
-
+      current = current.next;
     }
+    return mapper;
 
-    return mapper; 
   }
+
+
+
+
 
 
 
@@ -130,26 +160,31 @@ public class Toolbox
    */
   public static void removeNode(DoubleNode node) 
   {
-    if (node == null) //list cannot be null
+    if(node == null)
     {
-      throw new IllegalArgumentException("Node cannot be null.");
+      throw new IllegalArgumentException("head cannot be null");
     }
-    
-    //updates previous node and skips current
-    if(node.prev !=null)
+
+
+    //this points b to a as prev and next is b to c  
+    //c a no more b
+    if (node.prev != null)
     {
       node.prev.next = node.next;
     }
-
-    if(node.next !=null) //updates the next node and skips current
+    
+    //c as next points to a which is prev c A
+    if(node.next != null)
     {
       node.next.prev = node.prev;
     }
 
-    //remove current node completly
     node.prev = null;
     node.next = null;
+
+    node = null;
   }
+
 
   /**
    * Finds the nth element in a singly linked list.
@@ -161,22 +196,36 @@ public class Toolbox
    */
   public static SingleNode findNthElement(SingleNode head, int n) 
   {
-    if (head == null || n < 0) //must not be null or less than 0
+    //is the list empty dont move on if so
+    if(head == null)
     {
-      throw new IllegalArgumentException("Head cannot be null and n cannot be negative.");
+      throw new IllegalArgumentException("head cannot be null");
+    }//check if n is negative..index
+    if(n<0)
+    {
+      throw new IllegalArgumentException("index cannot be negative");
     }
 
-    SingleNode current = head; //starts at the head
-    int index = 0; // tracker object
+    //currrent is head the start
+    SingleNode current = head;
 
-    while(current != null && index < n) //so long as current isnt null and index is less than n
-    {
-      current = current.next; //iterate right/foward
-      index++; //increment 
-    }
+    //tracker called count to track moves
+    int count = 0;
 
-    return current; 
+    //keep going until weve reached the nth node
+    while(current != null && count < n)//do not move foward once you have reached n steps
+{
+  current = current.next;
+  count++;
+}
+    return current;
+    
   }
+
+
+
+
+
 
   /**
    * Inserts a new node into a singly linked list given a pointer to a node in the middle of the list.
@@ -187,17 +236,26 @@ public class Toolbox
    */
   public static void insertNode(SingleNode node, SingleNode newNode) //single node is just a pointer
   {
-    if (node == null || newNode == null) //niether cannot be null
+    //check if either is null
+    if(node == null || newNode == null)
     {
-      throw new IllegalArgumentException("Node and newNode cannot be null.");
+      throw new IllegalArgumentException("head cannor be null");
     }
 
-    newNode.next = node.next; //newNode points to the next node after current
+    //a points to b. new node and head points to b
+    //1 node. node.next is 2.....123. we want new node 4 in between 1and 2 now
+    newNode.next = node.next;
 
-    node.next = newNode; //insert newNode after current node 
+    //this makes the current one point to the newnode 1 to 4
+    node.next = newNode;
 
-    //[0, 1, 2, 3]
   }
+
+
+
+
+
+
 
   /**
    * Removes all nodes that are strictly larger than their next neighbor in the original list, except for the head.
@@ -216,28 +274,24 @@ public class Toolbox
    */
   public static void removeGiants(SingleNode head) 
   {
-    if (head == null) //cannot work with a null list
+    if(head == null)
     {
-      throw new IllegalArgumentException("Head cannot be null.");
+      throw new IllegalArgumentException("head cannot be null");
     }
 
-    SingleNode current = head; //starts with the head
+    SingleNode current = head;
 
-    //[0, 1, 2, 3, 4, 5]
-    while (current != null && current.next != null) //go through the list while this is good
+    //does this mean 5 and 6 isnt null?
+    while(current != null && current.next.next != null)
     {
-      //check to see if the next node is greater than its neightbor 
-      if(current.next.next != null && current.next.data > current.next.next.data)
+      if(current.next.data > current.next.next.data)
       {
-        current.next = current.next.next; //skips the current.next and points to the nighbor
+        current.next = current.next.next;
       }
-      else
-      {
-        current = current.next; //else move to the next node.
-      }
+      current = current.next;
     }
     
-  }
+  };
 
 
     /**
@@ -256,18 +310,21 @@ public class Toolbox
      */
     public static void tripleValues(Queue<Integer> queue) 
     {
-      if (queue == null) //list must not be null
+      if(queue == null)
       {
-        throw new IllegalArgumentException("Queue cannot be null");
+        throw new IllegalArgumentException("queue cannot be null");
       }
 
-      int size = queue.size(); //stores the start of the size
+       // Get the number of elements currently in the queue
+        int size = queue.size(); //creating size object as queue.size
 
-      //iterate through queue
-      for (int i = 0; i < size; i++)
+      for(int i = 0; i < size; i++)
       {
-        int value = queue.remove(); //remove dequeue element from front
-        queue.add(value * 3); //triple value and enqueue back
+        int value = queue.poll();// poll() removes and return the first item
+
+        int tri = value * 3; //* by three 
+
+        queue.offer(tri); //offer adds to the back of the queue
       }
       
     }
@@ -292,25 +349,19 @@ public class Toolbox
    */
   public static void rotateQueueLeft(Queue<Integer> queue, int k) 
   {
-    if (queue == null || k < 0) //cannot by null and not k be negative
+    if(queue == null || k < 0)
     {
-      throw new IllegalArgumentException("Queue cannot be null and k cannot be negative.");
-    }
-    
-    int size = queue.size(); //get number of elements in teh queue
-
-    if(size == 0 || k% size ==0) //no reottaion is required if queueis empty or mutliple of the size
-    {
-      return;
+      throw new IllegalArgumentException("Queue cannot be null and k cannot be negative");
     }
 
-    k=k % size; //k is larger than the queu size
+    int size = queue.size();
 
-    //move the first k element to the back of the queue
-    for (int i = 0; i < k; i++) 
+    for (int i = 0; i < k; i++) //iterates the loop stops at k
     {
-      int front = queue.remove(); // Remove from front
-      queue.add(front);     
+     int value = queue.poll(); //remove from front
+     int tri = value * 3;
+     
+      queue.offer(tri); //add to back 
     }
 
   }
@@ -334,28 +385,31 @@ public class Toolbox
   //use a while loop instead of a for each loop if you need to iterate through a string
   public static boolean hasBalancedParentheses(String input)  
   {
-    if (input == null) //no null string for this to operate
+    //Check for null input
+    if (input == null) 
     {
-      throw new IllegalArgumentException("Input string cannot be null.");
-    }
-    java.util.Stack<Character> stack = new java.util.Stack<>(); // Stack for open parentheses
-
-  for (char ch : input.toCharArray()) 
-  { // Convert string to character array and loop
-    if (ch == '(') 
-    {
-      stack.push(ch); // Push opening parenthesis onto stack
-    } else if (ch == ')') 
-    {
-      if (stack.isEmpty()) 
-      {
-        // No matching open parenthesis
-        return false;
-      }
-      stack.pop(); // Match found, remove opening from stack
+        throw new IllegalArgumentException("Input string cannot be null");
     }
     
-  }
+    Stack<Character> stack = new Stack<>();
+  
+    //converts the string to a char array to iterate 
+   for(char c : input.toCharArray()) //first time the loop runs the opeing (
+   {
+    if (c == '(')
+    {
+      stack.push(c); //push the opening ( into the stack 
+    }
+    else if (c == ')')
+    {
+      if (stack.isEmpty())
+      {
+        return false;
+      }
+      stack.pop();
+    }
+   }
+
 
   // Return true if all open parentheses were closed
   return stack.isEmpty();
@@ -385,28 +439,28 @@ public class Toolbox
    */
   public static String topScorer(Map<String, Integer> scores) 
   {
-    if (scores == null || scores.isEmpty()) 
-    {
-      throw new IllegalArgumentException("Scares cannot be null or empty");
-    }
-    String topName = null;          // Store the name of the top scorer
-  int topScore = Integer.MIN_VALUE; // Initialize with the lowest possible score
+    //determin the highest score in the map
+    //keep track of who has the highest score in the map
+    //for each loop
+    //key object to get name
+    //value object to get the highest score( in order to get a value use a key)
 
-  //Iterate over each entry in the map
-  for (Map.Entry<String, Integer> entry : scores.entrySet()) 
-  {
-    String name = entry.getKey();  // Player's name
-    int score = entry.getValue();  //Player's score
+    String name = ""; //this will keep track of the high score name
+    int maxScore = 0; //tracker for high score
 
-    //Ifscore is higher than current top score, or tied but name is lexicographically smaller
-    if (score > topScore || (score == topScore && (topName == null || name.compareTo(topName) < 0))) 
-    {
-      topScore = score; // Update top score
-      topName = name;   //Update top scorer
-    }
-  }
 
-  return topName; // Return topname
+    for(String entry : scores.keySet()) //score is the name and the key is a string
+      {
+        if(scores.get(entry) > maxScore || (scores.get(entry) == maxScore && entry.charAt(0) < name.charAt(0)))//entry is string of the map key set
+        {
+          maxScore = scores.get(entry); //save the highest score found
+          name = entry;
+        }
+
+      }
+   
+
+  return name; // Return name
   
   }
 }
